@@ -19,11 +19,11 @@ const server = http.createServer((req, res) => {
       box-shadow: 0 2px 8px rgba(0,0,0,.15); display: flex; flex-direction: column; gap: 12px; min-width: 280px;
     }
     #login-box h2 { font-size: 20px; color: #333; }
-    #name-input {
+    .name-input {
       padding: 10px 14px; border: 1px solid #ccc; border-radius: 24px;
       font-size: 15px; outline: none; transition: border-color .2s;
     }
-    #name-input:focus { border-color: #0084ff; }
+    .name-input:focus { border-color: #0084ff; }
     #join-btn {
       padding: 10px 20px; background: #0084ff; color: #fff; border: none;
       border-radius: 24px; font-size: 15px; cursor: pointer;
@@ -49,7 +49,8 @@ const server = http.createServer((req, res) => {
   <div id="login">
     <div id="login-box">
       <h2>Join Chat</h2>
-      <input id="name-input" type="text" placeholder="Enter your name…" maxlength="30">
+      <input id="first-name" class="name-input" type="text" placeholder="First name…" maxlength="30">
+      <input id="last-name" class="name-input" type="text" placeholder="Last name…" maxlength="30">
       <button id="join-btn" onclick="join()">Join</button>
     </div>
   </div>
@@ -74,9 +75,10 @@ const server = http.createServer((req, res) => {
     };
 
     function join() {
-      const name = document.getElementById('name-input').value.trim();
-      if (!name) return;
-      userName = name;
+      const first = document.getElementById('first-name').value.trim();
+      const last = document.getElementById('last-name').value.trim();
+      if (!first || !last) return;
+      userName = first + ' ' + last;
       document.getElementById('login').style.display = 'none';
       document.getElementById('chat').style.display = 'flex';
       input.focus();
@@ -89,7 +91,8 @@ const server = http.createServer((req, res) => {
       }
     }
 
-    document.getElementById('name-input').addEventListener('keydown', e => e.key === 'Enter' && join());
+    document.getElementById('first-name').addEventListener('keydown', e => e.key === 'Enter' && document.getElementById('last-name').focus());
+    document.getElementById('last-name').addEventListener('keydown', e => e.key === 'Enter' && join());
     input.addEventListener('keydown', e => e.key === 'Enter' && send());
   </script>
 </body>
