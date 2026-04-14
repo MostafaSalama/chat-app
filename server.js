@@ -1,6 +1,11 @@
 const http = require('http');
 const WebSocket = require('ws');
 
+function log(level, message, meta = {}) {
+  const entry = { timestamp: new Date().toISOString(), level, message, ...meta };
+  console.log(JSON.stringify(entry));
+}
+
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.end(`<!DOCTYPE html>
@@ -419,6 +424,7 @@ function sendCount() {
 }
 
 wss.on('connection', ws => {
+  log('info', 'Client connected', { clients: wss.clients.size + 1 });
   sendCount();
 
   ws.on('message', raw => {
@@ -427,10 +433,12 @@ wss.on('connection', ws => {
 
     if (data.type === 'join') {
       ws.senderName = data.sender;
+      log('info', 'User joined', { user: data.sender, clients: wss.clients.size });
       broadcast({ type: 'system', text: data.sender + ' joined the chat' }, ws);
       sendCount();
 
     } else if (data.type === 'message') {
+      log('info', 'Message sent', { user: data.sender, length: data.text.length });
       broadcastAll({
         type: 'message',
         sender: data.sender,
@@ -445,11 +453,14 @@ wss.on('connection', ws => {
 
   ws.on('close', () => {
     if (ws.senderName) {
+      log('info', 'User left', { user: ws.senderName, clients: wss.clients.size - 1 });
       broadcast({ type: 'system', text: ws.senderName + ' left the chat' }, ws);
+    } else {
+      log('info', 'Client disconnected', { clients: wss.clients.size - 1 });
     }
     sendCount();
   });
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log('Chat running at http://localhost:' + PORT));
+server.listen(PORT, () => log('info', 'Server started', { url: 'http://localhost:' + PORT }));
