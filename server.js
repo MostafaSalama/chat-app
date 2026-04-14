@@ -43,6 +43,36 @@ const server = http.createServer((req, res) => {
       border-radius: 24px; font-size: 15px; cursor: pointer; transition: background .2s;
     }
     #send-btn:hover { background: #006ed6; }
+    #header {
+      background: #0084ff;
+      color: #fff;
+      padding: 0 20px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+      flex-shrink: 0;
+    }
+    #header .logo {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    #header h1 { font-size: 18px; font-weight: 600; letter-spacing: .3px; }
+    #header .status {
+      margin-left: auto;
+      font-size: 13px;
+      opacity: .85;
+      display: flex; align-items: center; gap: 5px;
+    }
+    #header .dot {
+      width: 8px; height: 8px;
+      background: #4cff91;
+      border-radius: 50%;
+    }
   </style>
 </head>
 <body>
@@ -55,6 +85,11 @@ const server = http.createServer((req, res) => {
     </div>
   </div>
   <div id="chat">
+    <div id="header">
+      <div class="logo">💬</div>
+      <h1>ChatApp</h1>
+      <div class="status"><span class="dot"></span>Online</div>
+    </div>
     <div id="messages"></div>
     <div id="input-row">
       <input id="input" type="text" placeholder="Type a message…">
