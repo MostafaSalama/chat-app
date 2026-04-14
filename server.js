@@ -29,7 +29,7 @@ const server = http.createServer((req, res) => {
       border-radius: 24px; font-size: 15px; cursor: pointer;
     }
     #join-btn:hover { background: #006ed6; }
-    #chat { display: none; flex-direction: column; height: 100%; }
+    #chat { display: none; flex-direction: column; flex: 1; }
     #messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
     #messages div { background: #fff; border-radius: 8px; padding: 8px 12px; max-width: 70%; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
     #input-row { display: flex; gap: 8px; padding: 12px; background: #fff; border-top: 1px solid #ddd; }
@@ -43,6 +43,7 @@ const server = http.createServer((req, res) => {
       border-radius: 24px; font-size: 15px; cursor: pointer; transition: background .2s;
     }
     #send-btn:hover { background: #006ed6; }
+    footer { text-align: center; padding: 8px; font-size: 13px; color: #888; background: #fff; border-top: 1px solid #eee; }
   </style>
 </head>
 <body>
@@ -61,6 +62,7 @@ const server = http.createServer((req, res) => {
       <button id="send-btn" onclick="send()">Send</button>
     </div>
   </div>
+  <footer>Chat App &copy; 2026</footer>
   <script>
     let userName = '';
     const ws = new WebSocket('ws://' + location.host);
